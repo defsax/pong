@@ -12,6 +12,15 @@ var ballR = 5;
 var ballDX = -1;
 var ballDY = -1;
 
+var rPaddleX = WIDTH - 15;
+var rPaddleY = HEIGHT / 2;
+var rPaddleW = 2;
+var rPaddleH = 25;
+
+var lPaddleX = 15;
+var lPaddleY = HEIGHT / 2;
+var lPaddleW = 2;
+var lPaddleH = 25;
 
 //scores
 var leftScore = 0;
@@ -33,7 +42,10 @@ function gameLoop(){
   drawBall();
   updateBall();
   drawLines();
-
+  drawPaddle(rPaddleX, rPaddleY, rPaddleW, rPaddleH);
+  drawPaddle(lPaddleX, lPaddleY, lPaddleW, lPaddleH);
+  
+  updatePaddle(dt);
   
   requestAnimationFrame(gameLoop);
 };
@@ -52,6 +64,18 @@ function drawLines(){
   ctx.lineTo(WIDTH / 2, HEIGHT);
   ctx.stroke();
   ctx.closePath();
+}
+
+function drawPaddle(x, y, w, h){
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.fillStyle = "black";
+  ctx.fill();
+  ctx.closePath();
+}
+
+function updatePaddle(deltaT){
+  rPaddleY = ballY;
 }
 
 function drawBall(){
