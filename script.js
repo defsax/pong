@@ -6,8 +6,8 @@ var ctx = canvas.getContext("2d");
 const WIDTH = 400;
 const HEIGHT = 400;
 
-var ballX = 100;
-var ballY = 150;
+var ballX = WIDTH / 2;
+var ballY = 300;
 var ballR = 5;
 var ballDX = -1;
 var ballDY = -1;
@@ -15,12 +15,16 @@ var ballDY = -1;
 var rPaddleX = WIDTH - 15;
 var rPaddleY = HEIGHT / 2;
 var rPaddleW = 2;
-var rPaddleH = 25;
+var rPaddleH = 50;
+var rPaddleDir = -1;
+var rSpeed = 0.75;
 
 var lPaddleX = 15;
 var lPaddleY = HEIGHT / 2;
 var lPaddleW = 2;
-var lPaddleH = 25;
+var lPaddleH = 50;
+var lPaddleDir = -1;
+var lSpeed = 0.75;
 
 //scores
 var leftScore = 0;
@@ -45,11 +49,30 @@ function gameLoop(){
   drawPaddle(rPaddleX, rPaddleY, rPaddleW, rPaddleH);
   drawPaddle(lPaddleX, lPaddleY, lPaddleW, lPaddleH);
   
-  updatePaddle(dt);
+  updatePaddleR(dt);
+  updatePaddleL(dt);
+  isCollision();
   
   requestAnimationFrame(gameLoop);
 };
 requestAnimationFrame(gameLoop);
+
+
+function isCollision(){
+  if(ballX - ballR < lPaddleX + lPaddleW &&
+    ballY > lPaddleY &&
+    ballY < lPaddleY + lPaddleH){
+    ballDX = -ballDX;
+    ballX = lPaddleX + lPaddleW + ballR;
+  }
+  
+  if(ballX + ballR > rPaddleX &&
+    ballY > rPaddleY &&
+    ballY < rPaddleY + rPaddleH){
+    ballDX = -ballDX;
+    ballX = rPaddleX - ballR;
+  }
+}
 
 function drawScores(){
   utils.drawText(leftScore, WIDTH / 2 - 10, 30, "black", "fill", "25px Arial", "right", ctx);
@@ -74,8 +97,33 @@ function drawPaddle(x, y, w, h){
   ctx.closePath();
 }
 
-function updatePaddle(deltaT){
-  rPaddleY = ballY;
+function updatePaddleR(deltaT){
+  if(ballY >= (rPaddleY + rPaddleH / 2)){
+    rPaddleDir = 1;
+  }
+  else if(ballY <= (rPaddleY + rPaddleH / 2)){
+    rPaddleDir = -1;
+  }
+  
+  if(ballX > (WIDTH / 2))
+    rPaddleY += rPaddleDir * rSpeed;
+  
+  console.log(rPaddleY);
+}
+
+function updatePaddleL(deltaT){
+  console.log("Ballx = " + ballX);
+  if(ballY >= (lPaddleY + lPaddleH / 2)){
+    lPaddleDir = 1;
+  }
+  else if(ballY <= (lPaddleY + lPaddleH / 2)){
+    lPaddleDir = -1;
+  }
+  
+  if(ballX < (WIDTH / 2))
+    lPaddleY += lPaddleDir * lSpeed;
+  
+  console.log(lPaddleY);
 }
 
 function drawBall(){
