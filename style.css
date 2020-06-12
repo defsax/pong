@@ -1,0 +1,14 @@
+#container{
+
+}
+
+.centre{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#pongCanvas{
+  border: 1px solid black;
+}
