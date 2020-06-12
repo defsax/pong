@@ -20,3 +20,6 @@ export function drawText(text, w, h, color, type, font, align, context){
   }
 }
 
+export function getRndFloat(min, max) {
+  return Math.random() * (max - min) + min;
+}

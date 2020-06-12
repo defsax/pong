@@ -11,6 +11,7 @@ var ballY = 300;
 var ballR = 5;
 var ballDX = -1;
 var ballDY = -1;
+calculateStartAngle();
 
 var rPaddleX = WIDTH - 15;
 var rPaddleY = HEIGHT / 2;
@@ -57,6 +58,12 @@ function gameLoop(){
 };
 requestAnimationFrame(gameLoop);
 
+function calculateStartAngle(){
+  var newBounceAngle = utils.getRndFloat(-1, 1) * (5 * Math.PI / 10);
+  ballDX = Math.sin(newBounceAngle);
+  ballDY = -Math.cos(newBounceAngle);
+  //this.direction.x = -this.direction.x;
+}
 
 function isCollision(){
   if(ballX - ballR < lPaddleX + lPaddleW &&
