@@ -23,3 +23,14 @@ export function drawText(text, w, h, color, type, font, align, context){
 export function getRndFloat(min, max) {
   return Math.random() * (max - min) + min;
 }
+
+export function isCollision(ball, paddle){
+  if(ball.position.x - ball.radius <= paddle.position.x + paddle.width &&
+    ball.position.x + ball.radius >= paddle.position.x &&
+    ball.position.y + ball.radius >= paddle.position.y &&
+    ball.position.y - ball.radius <= paddle.position.y + paddle.height){
+    return true;
+  }
+  else
+    return false;
+}
