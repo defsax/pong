@@ -1,3 +1,5 @@
+import * as utils from './utils.js';
+
 export default function Paddle(gameHandle, x, y, w, h, s){
   var dir = -1;
   var speed = s;
@@ -6,6 +8,22 @@ export default function Paddle(gameHandle, x, y, w, h, s){
   this.height = h;
   this.position = { x: x, y: y };
   
+  
+  this.calculateNewAngle = function(){
+    let paddleCentre = this.position.y + (this.height / 2);
+    let distanceFromCentre = paddleCentre - gameHandle.ball.position.x;
+    
+    let normalizeIntersect = distanceFromCentre / (this.height / 2);
+    let newBounceAngle = normalizeIntersect * (5 * Math.PI / 17);
+    
+    gameHandle.ball.direction.x = Math.sin(newBounceAngle);
+    gameHandle.ball.direction.y = -Math.cos(newBounceAngle);
+    
+  }
+  
+  
+  
+
   
   this.draw = function(ctx){
     ctx.beginPath();
@@ -27,12 +45,12 @@ export default function Paddle(gameHandle, x, y, w, h, s){
     //modify actual y position by direction times speed
     if(this.position.x > gameHandle.gWIDTH / 2){
       //paddle is on the right
-      if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 2))
+      if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 3))
         this.position.y += dir * speed;
     }
     else{
       //paddle is on the left
-      if(gameHandle.ball.position.x < (gameHandle.gWIDTH / 2))
+      if(gameHandle.ball.position.x < (gameHandle.gWIDTH - gameHandle.gWIDTH / 3))
         this.position.y += dir * speed;
     }
     //prevent from going off the screen
@@ -40,5 +58,24 @@ export default function Paddle(gameHandle, x, y, w, h, s){
       this.position.y = 0;
     else if(this.position.y + this.height > gameHandle.gHEIGHT)
       this.position.y = gameHandle.gHEIGHT - this.height;
+    
+    
+    //check collisions with ball
+    if(utils.isCollision(gameHandle.ball, this)){
+      console.log("Paddle collision.");
+      
+      if(gameHandle.ball.position.y > this.position.y + this.height){
+        gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
+        gameHandle.ball.position.y = this.position.y + this.height + gameHandle.ball.radius;
+      }
+      if(gameHandle.ball.position.y < this.position.y){
+        gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
+        gameHandle.ball.position.y = this.position.y - gameHandle.ball.radius;
+      }
+      else{
+        this.calculateNewAngle();
+        //gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
+      }
+    }
   }
 }

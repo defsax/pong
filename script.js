@@ -21,8 +21,8 @@ function ObjectManager(){
   this.rScore = 0;
   this.lScore = 0;
   
-  this.ball = new Ball(this, WIDTH / 2, HEIGHT / 2, 5, 10);
-  this.paddleR = new Paddle(this, WIDTH - 15, HEIGHT / 2, 10, 50, 0.75); 
+  this.ball = new Ball(this, WIDTH / 2, HEIGHT / 3, 5, 1);
+  this.paddleR = new Paddle(this, WIDTH - 25, HEIGHT / 2, 10, 50, 0.75); 
   this.paddleL = new Paddle(this, 15, HEIGHT / 2, 10, 50, 0.75);
 
   objects.push(this.ball);
