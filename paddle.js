@@ -14,11 +14,11 @@ export default function Paddle(gameHandle, x, y, w, h, s){
     let distanceFromCentre = paddleCentre - gameHandle.ball.position.x;
     
     let normalizeIntersect = distanceFromCentre / (this.height / 2);
-    let newBounceAngle = normalizeIntersect * (5 * Math.PI / 17);
+    let newBounceAngle = normalizeIntersect * (5 * Math.PI / 12);
     
-    gameHandle.ball.direction.x = Math.sin(newBounceAngle);
+    gameHandle.ball.direction.x = -Math.sin(newBounceAngle);
     gameHandle.ball.direction.y = -Math.cos(newBounceAngle);
-    
+    //gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
   }
   
   
@@ -61,20 +61,21 @@ export default function Paddle(gameHandle, x, y, w, h, s){
     
     
     //check collisions with ball
-    if(utils.isCollision(gameHandle.ball, this)){
-      console.log("Paddle collision.");
-      
+    if(utils.isCollision(gameHandle.ball, this)){      
       if(gameHandle.ball.position.y > this.position.y + this.height){
+        console.log("Paddle collision bottom.");
         gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
         gameHandle.ball.position.y = this.position.y + this.height + gameHandle.ball.radius;
       }
       if(gameHandle.ball.position.y < this.position.y){
+        console.log("Paddle collision top.");
         gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
         gameHandle.ball.position.y = this.position.y - gameHandle.ball.radius;
       }
       else{
-        this.calculateNewAngle();
-        //gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
+        console.log("Paddle collision left or right.");
+        //this.calculateNewAngle();
+        gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
       }
     }
   }

@@ -21,9 +21,10 @@ function ObjectManager(){
   this.rScore = 0;
   this.lScore = 0;
   
-  this.ball = new Ball(this, WIDTH / 2, HEIGHT / 3, 5, 1);
-  this.paddleR = new Paddle(this, WIDTH - 25, HEIGHT / 2, 10, 50, 0.75); 
-  this.paddleL = new Paddle(this, 15, HEIGHT / 2, 10, 50, 0.75);
+  this.ball = new Ball(this, WIDTH / 2, HEIGHT / 2, 5, 2);
+  this.ball.calculateStartAngle();
+  this.paddleR = new Paddle(this, WIDTH - 25, HEIGHT / 2, 10, 50, 1); 
+  this.paddleL = new Paddle(this, 15, HEIGHT / 2, 10, 50, 1);
 
   objects.push(this.ball);
   objects.push(this.paddleR);
@@ -58,8 +59,6 @@ function gameLoop(){
   objManager.update(dt);
   objManager.draw(ctx);
   
-  isCollision();
-  
   requestAnimationFrame(gameLoop);
 };
 requestAnimationFrame(gameLoop);
@@ -69,22 +68,6 @@ function calculateStartAngle(){
   ballDX = Math.sin(newBounceAngle);
   ballDY = -Math.cos(newBounceAngle);
   //this.direction.x = -this.direction.x;
-}
-
-function isCollision(){
-//   if(ballX - ballR < lPaddleX + lPaddleW &&
-//     ballY > lPaddleY &&
-//     ballY < lPaddleY + lPaddleH){
-//     ballDX = -ballDX;
-//     ballX = lPaddleX + lPaddleW + ballR;
-//   }
-  
-//   if(ballX + ballR > rPaddleX &&
-//     ballY > rPaddleY &&
-//     ballY < rPaddleY + rPaddleH){
-//     ballDX = -ballDX;
-//     ballX = rPaddleX - ballR;
-//   }
 }
 
 function drawLines(){
