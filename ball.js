@@ -3,6 +3,12 @@ import * as utils from './utils.js';
 export default function Ball(gameHandle, x, y, r, s){
   var speed = s;
   
+  this.resetBall = function(){
+    this.position.x = gameHandle.gWIDTH / 2;
+    this.position.y = gameHandle.gHEIGHT / 2;
+    this.calculateStartAngle();
+  }
+  
   this.radius = r;
   this.position = { x: x, y: y };
   this.direction = { x: 1.0, y: 0.3 };
@@ -23,24 +29,30 @@ export default function Ball(gameHandle, x, y, r, s){
     //if ball hits left side, increment right's score and reset pos
     if(this.position.x - this.radius < 0){
       gameHandle.rScore++;
-      this.position.x = gameHandle.gWIDTH / 2;
-      this.position.y = gameHandle.gHEIGHT / 2;
-      //this.direction.x = -this.direction.x;
-      this.calculateStartAngle();
+      this.resetBall();
     }
     //if ball hits right side, increment left's score and reset pos
     else if(this.position.x + this.radius > gameHandle.gWIDTH){
       gameHandle.lScore++;
-      this.position.x = gameHandle.gWIDTH / 2;
-      this.position.y = gameHandle.gHEIGHT / 2;
-      //this.direction.x = -this.direction.x;
-      this.calculateStartAngle();
+      this.resetBall();
     }
     //top or bottom
-    else if(this.position.y - this.radius < 0)
+    else if(this.position.y - this.radius < 0){
       this.direction.y = -this.direction.y;
-    else if(this.position.y + this.radius > gameHandle.gHEIGHT)
+      
+      //if ball is pushed out of bounds by the paddle
+      if(this.position.y < 0){
+        this.resetBall();
+      }
+    }
+    else if(this.position.y + this.radius > gameHandle.gHEIGHT){
       this.direction.y = -this.direction.y;
+      
+      //if ball is pushed out of bounds by the paddle
+      if(this.position.y > gameHandle.gHEIGHT){
+        this.resetBall();
+      }
+    }
   }
   
   this.calculateStartAngle = function(){
