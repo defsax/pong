@@ -56,7 +56,15 @@ export default function Ball(gameHandle, x, y, r, s){
   }
   
   this.calculateStartAngle = function(){
-    var newBounceAngle = utils.getRndFloat(-1, 1) * (5 * Math.PI / 12);
+    var newBounceAngle = utils.getRndFloat(-1.2, 1.2);
+    while(newBounceAngle < 0.1 && newBounceAngle > -0.1){
+      console.log(newBounceAngle);
+      newBounceAngle = utils.getRndFloat(-1.2, 1.2);
+    }
+    //let normalizedNum = utils.getRndFloat(-1, 1);
+      
+    //newBounceAngle = 1.2;
+    //var newBounceAngle = utils.getRndFloat(-1, 1) * (5 * Math.PI / 12);
     console.log("New bounce angle: " + newBounceAngle);
     this.direction.x = Math.sin(newBounceAngle);
     this.direction.y = -Math.cos(newBounceAngle);
