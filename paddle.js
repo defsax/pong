@@ -23,7 +23,7 @@ export default function Paddle(gameHandle, x, y, w, h, s){
   
   
   
-
+  
   
   this.draw = function(ctx){
     ctx.beginPath();
@@ -34,14 +34,25 @@ export default function Paddle(gameHandle, x, y, w, h, s){
   }
   
   this.update = function(dt){
-    //if ball is higher on the y axis, move paddle in pos direction
-    if(gameHandle.ball.position.y >= (this.position.y + this.height / 2)){
-      dir = 1;
-    } //else move in neg direction (up)
-    else if(gameHandle.ball.position.y <= (this.position.y + this.height / 2)){
-      dir = -1;
-    }
+    var test = gameHandle.gWIDTH / 4;
     
+    if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 4) && gameHandle.ball.position.x < (gameHandle.gWIDTH - gameHandle.gWIDTH / 4)){
+      //if ball trajectory position is higher on the y axis, move paddle in that direction
+      if(gameHandle.ball.trajectory.y >= (this.position.y + this.height / 2)){
+        dir = 1;
+      } //else move in neg direction (up)
+      else if(gameHandle.ball.trajectory.y <= (this.position.y + this.height / 2)){
+        dir = -1;
+      }
+    }
+    else{
+      if(gameHandle.ball.position.y >= (this.position.y + this.height / 2)){
+        dir = 1;
+      } //else move in neg direction (up)
+      else if(gameHandle.ball.position.y <= (this.position.y + this.height / 2)){
+        dir = -1;
+      }
+    }
     //modify actual y position by direction times speed
     if(this.position.x > gameHandle.gWIDTH / 2){
       //paddle is on the right
@@ -77,6 +88,7 @@ export default function Paddle(gameHandle, x, y, w, h, s){
         //this.calculateNewAngle();
         gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
       }
+      gameHandle.ball.calculateTrajectory();
     }
   }
 }
