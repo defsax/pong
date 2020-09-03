@@ -9,6 +9,10 @@ export default function Ball(gameHandle, x, y, r, s){
     this.calculateStartAngle();
   }
   
+  this.setSpeed = function(spd){
+    speed = spd;
+  }
+  
   this.radius = r;
   this.position = { x: x, y: y };
   this.direction = { x: 1.0, y: 0.3 };
@@ -28,7 +32,7 @@ export default function Ball(gameHandle, x, y, r, s){
     this.position.y += this.direction.y * speed;
     
     //if ball hits left side, increment right's score and reset pos
-    if(this.position.x - this.radius < 0){
+    if(this.position.x + this.radius < 0){
       
       console.log("X: " + this.position.x);
       console.log("Y: " + this.position.y);
@@ -37,7 +41,7 @@ export default function Ball(gameHandle, x, y, r, s){
       this.resetBall();
     }
     //if ball hits right side, increment left's score and reset pos
-    else if(this.position.x + this.radius > gameHandle.gWIDTH){
+    else if(this.position.x - this.radius > gameHandle.gWIDTH){
       
       console.log("X: " + this.position.x);
       console.log("Y: " + this.position.y);
@@ -66,15 +70,13 @@ export default function Ball(gameHandle, x, y, r, s){
   
   this.calculateStartAngle = function(){
     var newBounceAngle = utils.getRndFloat(-1.2, 1.2);
+    
+    //loop until no angles too close to straight up or down
     while(newBounceAngle < 0.1 && newBounceAngle > -0.1){
       console.log(newBounceAngle);
       newBounceAngle = utils.getRndFloat(-1.2, 1.2);
     }
-    
-    
-    //var newBounceAngle = utils.getRndFloat(-1, 1) * (5 * Math.PI / 12);
-    //newBounceAngle = -1;
-    console.log("New bounce angle: " + newBounceAngle);
+ 
     this.direction.x = Math.sin(newBounceAngle);
     this.direction.y = -Math.cos(newBounceAngle);
     
@@ -85,53 +87,28 @@ export default function Ball(gameHandle, x, y, r, s){
   }
   
   this.calculateTrajectory = function(){
-    console.log("X direction vec: " + this.direction.x);
-    console.log("Y direction vec: " + this.direction.y);
-    
-    var atan = Math.atan(this.direction.y/this.direction.x);//* (180/Math.PI);
-    console.log("ATAN: " + atan);
-    
     //get dest height of ball
+    var atan = Math.atan(this.direction.y /this.direction.x);
     var tan = Math.tan(atan);
+    
     if(Math.sign(this.direction.x) == -1){
-      console.log("Moving left...");
-      //var height = tan * this.position.x;
+      //moving left
       this.trajectory.y = tan * this.position.x;
-      //height = gameHandle.gHEIGHT / 2 - height;
-      /*
-       *      this.trajectory.y = gameHandle.gHEIGHT / 2 - this.trajectory.y;*/
-      //       if(Math.sign(this.direction.y) == -1){
-      //         //this.trajectory.y = -this.trajectory.y;
-      //         this.trajectory.y = this.position.y - this.trajectory.y;
-      //       }
-      //       else{
-      //         this.trajectory.y = this.position.y + this.trajectory.y;
-      //       }
     }
     else{
-      console.log("Moving right...");
-      //var height = tan * this.position.x;
+      //moving right
       this.trajectory.y = tan * (gameHandle.gWIDTH - this.position.x);
-      //height = gameHandle.gHEIGHT / 2 - height;
-      //this.trajectory.y = gameHandle.gHEIGHT / 2 - this.trajectory.y;
-      
-      //       if(Math.sign(this.direction.y) == -1){
-      //         this.trajectory.y = -this.trajectory.y;
-      //       }
-      // 
-      //       this.trajectory.y = gameHandle.gHEIGHT - this.position.y + this.trajectory.y;
     }
     
     this.trajectory.y = Math.abs(this.trajectory.y);
     
     if(Math.sign(this.direction.y) == -1){
-      //this.trajectory.y = -this.trajectory.y;
+      //if moving up, subtract trajectory from ball y position
       this.trajectory.y = this.position.y - this.trajectory.y;
     }
     else{
+      //if moving down, add trajectory
       this.trajectory.y = this.position.y + this.trajectory.y;
     }
-    
-    console.log("Trajectory Y: " + this.trajectory.y + "\n");
   }
 }

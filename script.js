@@ -2,6 +2,31 @@ import * as utils from './utils.js';
 import Paddle from './paddle.js';
 import Ball from './ball.js';
 
+var speedslider = document.getElementById("speedslider");
+var speeddisplay = document.getElementById("ballspeed");
+speeddisplay.innerHTML = speedslider.value;
+
+var leftslider = document.getElementById("leftslider");
+var leftdisplay = document.getElementById("leftspeed");
+leftdisplay.innerHTML = leftslider.value;
+
+var rightslider = document.getElementById("rightslider");
+var rightdisplay = document.getElementById("rightspeed");
+rightdisplay.innerHTML = rightslider.value;
+
+leftslider.oninput = function(){
+  leftdisplay.innerHTML = this.value;
+  objManager.paddleL.setSpeed(this.value);
+}
+rightslider.oninput = function(){
+  rightdisplay.innerHTML = this.value;
+  objManager.paddleR.setSpeed(this.value);
+}
+speedslider.oninput = function(){
+  speeddisplay.innerHTML = this.value;
+  objManager.ball.setSpeed(this.value);
+}
+
 var canvas = document.getElementById("pongCanvas");
 var ctx = canvas.getContext("2d");
 const WIDTH = 400;
@@ -21,7 +46,7 @@ function ObjectManager(){
   this.rScore = 0;
   this.lScore = 0;
   
-  this.ball = new Ball(this, WIDTH / 2, HEIGHT / 2, 5, 2);
+  this.ball = new Ball(this, WIDTH / 2, HEIGHT / 2, 5, speedslider.value);
   this.ball.calculateStartAngle();
   this.paddleR = new Paddle(this, WIDTH - 25, HEIGHT / 2, 10, 50, 1); 
   this.paddleL = new Paddle(this, 15, HEIGHT / 2, 10, 50, 1);

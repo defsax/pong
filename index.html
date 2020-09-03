@@ -11,6 +11,15 @@
   <body>
     <div class="centre">
       <canvas id="pongCanvas" width="400" height="400"></canvas>
+      
+      <p>Ball speed: <span id="ballspeed"></span></p>
+      <input type="range" min="1" max="5" value="1" class="slider" id="speedslider">
+      
+      <p>Left paddle speed: <span id="leftspeed"></span></p>
+      <input type="range" min="1" max="5" value="1" class="slider" id="leftslider">
+      
+      <p>Right paddle speed: <span id="rightspeed"></span></p>
+      <input type="range" min="1" max="5" value="1" class="slider" id="rightslider">
     </div>
     <script src="script.js" type="module"></script>
   </body>
