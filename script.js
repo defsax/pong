@@ -1,6 +1,10 @@
 import * as utils from './utils.js';
 import Paddle from './paddle.js';
 import Ball from './ball.js';
+import InputHandler from './input.js';
+
+const WIDTH = 400;
+const HEIGHT = 400;
 
 var speedslider = document.getElementById("speedslider");
 var speeddisplay = document.getElementById("ballspeed");
@@ -8,6 +12,8 @@ var leftslider = document.getElementById("leftslider");
 var leftdisplay = document.getElementById("leftspeed");
 var rightslider = document.getElementById("rightslider");
 var rightdisplay = document.getElementById("rightspeed");
+var canvas = document.getElementById("pongCanvas");
+var ctx = canvas.getContext("2d");
 
 speeddisplay.innerHTML = speedslider.value;
 leftdisplay.innerHTML = leftslider.value;
@@ -25,11 +31,6 @@ speedslider.oninput = function(){
   speeddisplay.innerHTML = this.value;
   objManager.ball.setSpeed(this.value);
 }
-
-var canvas = document.getElementById("pongCanvas");
-var ctx = canvas.getContext("2d");
-const WIDTH = 400;
-const HEIGHT = 400;
 
 function ObjectManager(){
   var objects = [];
@@ -59,6 +60,8 @@ function ObjectManager(){
 }
 
 var objManager = new ObjectManager();
+var inputHandler = new InputHandler(objManager);
+inputHandler.initialize();
 
 //timing
 var now;

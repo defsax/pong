@@ -4,9 +4,12 @@
   height: 20px;
   background: #000000;
   outline: none;
+  /*outline: 2px solid white;*/
+  outline-offset: -2px;
   opacity: 1;
   border-radius: 15px;
-  border: none;
+  border: 2px solid white;
+  margin: 3px;
 }
 
 .slider::-webkit-slider-thumb {
@@ -16,7 +19,7 @@
   height: 25px;
   background: #FFFFFF;
   cursor: grab;
-  border-radius: 25px;
+  border-radius: 50%;
   border: none;
 }
 
@@ -26,7 +29,7 @@
   height: 25px;
   background: #FFFFFF;
   cursor: grab;
-  border-radius: 15px;
+  border-radius: 50%;
   border: none;
 }
 
@@ -38,6 +41,21 @@
   cursor: grab;
   border-radius: 15px;
   border: none;
+}
+
+.switch{
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  border-radius: 10px;
+  margin: 3px;
+  outline: none;
+  border: 1px solid black;
+}
+
+input:checked{
+  background-color: black;
 }
 
 .container{

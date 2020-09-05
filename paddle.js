@@ -1,10 +1,12 @@
 import * as utils from './utils.js';
 
 export default function Paddle(gameHandle, x, y, w, h, s){
+  var uControl = document.getElementById("ucontrol");
+  
   var dir = -1;
   var speed = s;
-  //var setSpeed = s;
   
+  this.userDir = 0;
   this.width = w;
   this.height = h;
   this.position = { x: x, y: y };
@@ -32,7 +34,7 @@ export default function Paddle(gameHandle, x, y, w, h, s){
     ctx.closePath();
   }
   
-  this.update = function(dt){    
+  this.update = function(dt){  
     if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 8) && gameHandle.ball.position.x < (gameHandle.gWIDTH - gameHandle.gWIDTH / 8)){
       //if ball trajectory position is higher on the y axis, move paddle in that direction
       if(gameHandle.ball.trajectory.y >= (this.position.y + this.height / 2)){
@@ -53,8 +55,12 @@ export default function Paddle(gameHandle, x, y, w, h, s){
     //modify actual y position by direction times speed
     if(this.position.x > gameHandle.gWIDTH / 2){
       //paddle is on the right
-      if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 3))
+      if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 3) && uControl.checked == false){
         this.position.y += dir * speed;
+        dir = 0;
+      }
+      else
+        this.position.y += this.userDir * speed;
     }
     else{
       //paddle is on the left
