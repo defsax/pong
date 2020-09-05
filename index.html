@@ -6,21 +6,26 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="reset.css">
 		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   </head>
   
   <body>
-    <div class="centre">
-      <canvas id="pongCanvas" width="400" height="400"></canvas>
-      
-      <p>Ball speed: <span id="ballspeed"></span></p>
-      <input type="range" min="1" max="5" value="1" class="slider" id="speedslider">
-      
-      <p>Left paddle speed: <span id="leftspeed"></span></p>
-      <input type="range" min="1" max="5" value="1" class="slider" id="leftslider">
-      
-      <p>Right paddle speed: <span id="rightspeed"></span></p>
-      <input type="range" min="1" max="5" value="1" class="slider" id="rightslider">
+    <div class="container">
+      <div class="canvasContainer">
+        <canvas id="pongCanvas" width="400" height="400"></canvas>
+      </div>
+    
+      <div class="controls">
+        <p>Ball speed: <span id="ballspeed"></span></p>
+        <input type="range" min="1" max="5" value="1" class="slider" id="speedslider">
+        
+        <p>Left paddle speed: <span id="leftspeed"></span></p>
+        <input type="range" min="1" max="5" value="1" class="slider" id="leftslider">
+        
+        <p>Right paddle speed: <span id="rightspeed"></span></p>
+        <input type="range" min="1" max="5" value="1" class="slider" id="rightslider">
+        <script src="script.js" type="module"></script>
+      </div>
     </div>
-    <script src="script.js" type="module"></script>
   </body>
 </html>

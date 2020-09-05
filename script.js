@@ -4,14 +4,13 @@ import Ball from './ball.js';
 
 var speedslider = document.getElementById("speedslider");
 var speeddisplay = document.getElementById("ballspeed");
-speeddisplay.innerHTML = speedslider.value;
-
 var leftslider = document.getElementById("leftslider");
 var leftdisplay = document.getElementById("leftspeed");
-leftdisplay.innerHTML = leftslider.value;
-
 var rightslider = document.getElementById("rightslider");
 var rightdisplay = document.getElementById("rightspeed");
+
+speeddisplay.innerHTML = speedslider.value;
+leftdisplay.innerHTML = leftslider.value;
 rightdisplay.innerHTML = rightslider.value;
 
 leftslider.oninput = function(){
@@ -32,13 +31,6 @@ var ctx = canvas.getContext("2d");
 const WIDTH = 400;
 const HEIGHT = 400;
 
-var ballX = WIDTH / 2;
-var ballY = 300;
-var ballR = 5;
-var ballDX = -1;
-var ballDY = -1;
-calculateStartAngle();
-
 function ObjectManager(){
   var objects = [];
   this.gWIDTH = WIDTH;
@@ -48,8 +40,8 @@ function ObjectManager(){
   
   this.ball = new Ball(this, WIDTH / 2, HEIGHT / 2, 5, speedslider.value);
   this.ball.calculateStartAngle();
-  this.paddleR = new Paddle(this, WIDTH - 25, HEIGHT / 2, 10, 50, 1); 
-  this.paddleL = new Paddle(this, 15, HEIGHT / 2, 10, 50, 1);
+  this.paddleR = new Paddle(this, WIDTH - 25, HEIGHT / 2, 10, 50, rightslider.value); 
+  this.paddleL = new Paddle(this, 15, HEIGHT / 2, 10, 50, leftslider.value);
 
   objects.push(this.ball);
   objects.push(this.paddleR);
@@ -87,13 +79,6 @@ function gameLoop(){
   requestAnimationFrame(gameLoop);
 };
 requestAnimationFrame(gameLoop);
-
-function calculateStartAngle(){
-  var newBounceAngle = utils.getRndFloat(-1, 1) * (5 * Math.PI / 10);
-  ballDX = Math.sin(newBounceAngle);
-  ballDY = -Math.cos(newBounceAngle);
-  //this.direction.x = -this.direction.x;
-}
 
 function drawLines(){
   ctx.setLineDash([10, 5]);

@@ -2,15 +2,21 @@ import * as utils from './utils.js';
 
 export default function Ball(gameHandle, x, y, r, s){
   var speed = s;
+  var ballHandle = this;
   
   this.resetBall = function(){
+    speed = 0;
     this.position.x = gameHandle.gWIDTH / 2;
     this.position.y = gameHandle.gHEIGHT / 2;
-    this.calculateStartAngle();
+    //this.calculateStartAngle();
+    window.setTimeout(function(){ballHandle.calculateStartAngle();}, 1000);
   }
   
   this.setSpeed = function(spd){
     speed = spd;
+  }
+  this.getSpeed = function(){
+    speed = document.getElementById("speedslider").value;
   }
   
   this.radius = r;
@@ -80,10 +86,20 @@ export default function Ball(gameHandle, x, y, r, s){
     this.direction.x = Math.sin(newBounceAngle);
     this.direction.y = -Math.cos(newBounceAngle);
     
-    if(gameHandle.rScore % 2 == 1)
+    //randomize up/down
+    if(Math.floor(Math.random() * 2) == 1){
       this.direction.y = -this.direction.y;
+    }
+    //ball direction depends on who's winning
+    if(gameHandle.lScore > gameHandle.rScore){
+      this.direction.x = -(Math.abs(this.direction.x));
+    }
+    else{
+        this.direction.x = (Math.abs(this.direction.x));
+    }
     
     this.calculateTrajectory();
+    this.getSpeed();
   }
   
   this.calculateTrajectory = function(){

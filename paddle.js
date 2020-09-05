@@ -74,8 +74,8 @@ export default function Paddle(gameHandle, x, y, w, h, s){
         gameHandle.ball.position.y - gameHandle.ball.radius < this.position.y + this.height &&
         gameHandle.ball.position.x < this.position.x + this.width &&
         gameHandle.ball.position.x > this.position.x &&
-        Math.sign(gameHandle.ball.direction.y) == -1
-      ){
+        Math.sign(gameHandle.ball.direction.y) == -1)
+      {
         console.log("Paddle collision bottom.");
         //if(Math.sign(gameHandle.ball.direction.y) == 1)
           gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
@@ -85,23 +85,29 @@ export default function Paddle(gameHandle, x, y, w, h, s){
         gameHandle.ball.position.y + gameHandle.ball.radius > this.position.y && 
         gameHandle.ball.position.x < this.position.x + this.width &&
         gameHandle.ball.position.x > this.position.x &&
-        Math.sign(gameHandle.ball.direction.y) == 1
-      ){
+        Math.sign(gameHandle.ball.direction.y) == 1)
+      {
         console.log("Paddle collision top.");
         //if(Math.sign(gameHandle.ball.direction.y) == -1)
           gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
         //gameHandle.ball.position.y = this.position.y - gameHandle.ball.radius - 5;
       }
       else if(gameHandle.ball.position.x - gameHandle.ball.radius < this.position.x + this.width 
-        && gameHandle.ball.position.x < gameHandle.gWIDTH / 2
-      ){
+        && gameHandle.ball.position.x > this.position.x
+        && gameHandle.ball.position.x < gameHandle.gWIDTH / 2)
+      {
         console.log("Right collision");
         if(Math.sign(gameHandle.ball.direction.x) == -1){
           gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
           //gameHandle.ball.position.x = this.position.x + this.width + gameHandle.ball.radius + 1;
         }
       }
-      else if(gameHandle.ball.position.x + gameHandle.ball.radius > this.position.x && gameHandle.ball.position.y > this.position.y && gameHandle.ball.position.y < this.position.y + this.height && gameHandle.ball.position.x > gameHandle.gWIDTH / 2){
+      else if(gameHandle.ball.position.x + gameHandle.ball.radius > this.position.x 
+        && gameHandle.ball.position.x + gameHandle.ball.radius < this.position.x + this.width
+        && gameHandle.ball.position.y > this.position.y 
+        && gameHandle.ball.position.y < this.position.y + this.height 
+        && gameHandle.ball.position.x > gameHandle.gWIDTH / 2)
+      {
         console.log("Left collision.");
         if(Math.sign(gameHandle.ball.direction.x) == 1){
           gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
