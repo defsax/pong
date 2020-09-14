@@ -1,7 +1,8 @@
 import * as utils from './utils.js';
 
 export default function Paddle(gameHandle, x, y, w, h, s){
-  var uControl = document.getElementById("ucontrol");
+  var leftControl = document.getElementById("ucontrol1");
+  var rightControl = document.getElementById("ucontrol2");
   
   var dir = -1;
   var speed = s;
@@ -55,7 +56,7 @@ export default function Paddle(gameHandle, x, y, w, h, s){
     //modify actual y position by direction times speed
     if(this.position.x > gameHandle.gWIDTH / 2){
       //paddle is on the right
-      if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 3) && uControl.checked == false){
+      if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 3) && rightControl.checked == false){
         this.position.y += dir * speed;
         dir = 0;
       }
@@ -64,8 +65,12 @@ export default function Paddle(gameHandle, x, y, w, h, s){
     }
     else{
       //paddle is on the left
-      if(gameHandle.ball.position.x < (gameHandle.gWIDTH - gameHandle.gWIDTH / 3))
+      if(gameHandle.ball.position.x < (gameHandle.gWIDTH - gameHandle.gWIDTH / 3) && leftControl.checked == false){
         this.position.y += dir * speed;
+        dir = 0;
+      }
+      else
+        this.position.y += this.userDir * speed;
     }
     //prevent from going off the screen
     if(this.position.y < 0)
@@ -83,9 +88,7 @@ export default function Paddle(gameHandle, x, y, w, h, s){
         Math.sign(gameHandle.ball.direction.y) == -1)
       {
         console.log("Paddle collision bottom.");
-        //if(Math.sign(gameHandle.ball.direction.y) == 1)
-          gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
-        //gameHandle.ball.position.y = this.position.y + this.height + gameHandle.ball.radius + 5;
+        gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
       }
       else if(gameHandle.ball.position.y < this.position.y &&
         gameHandle.ball.position.y + gameHandle.ball.radius > this.position.y && 
@@ -94,9 +97,7 @@ export default function Paddle(gameHandle, x, y, w, h, s){
         Math.sign(gameHandle.ball.direction.y) == 1)
       {
         console.log("Paddle collision top.");
-        //if(Math.sign(gameHandle.ball.direction.y) == -1)
-          gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
-        //gameHandle.ball.position.y = this.position.y - gameHandle.ball.radius - 5;
+        gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
       }
       else if(gameHandle.ball.position.x - gameHandle.ball.radius < this.position.x + this.width 
         && gameHandle.ball.position.x > this.position.x
@@ -105,7 +106,6 @@ export default function Paddle(gameHandle, x, y, w, h, s){
         console.log("Right collision");
         if(Math.sign(gameHandle.ball.direction.x) == -1){
           gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
-          //gameHandle.ball.position.x = this.position.x + this.width + gameHandle.ball.radius + 1;
         }
       }
       else if(gameHandle.ball.position.x + gameHandle.ball.radius > this.position.x 
@@ -120,15 +120,6 @@ export default function Paddle(gameHandle, x, y, w, h, s){
           //gameHandle.ball.position.x = this.position.x - gameHandle.ball.radius - 1;
         }
       }
-//       else{
-//         console.log("Paddle collision left or right.");
-//         //this.calculateNewAngle();
-//         gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
-//         if(gameHandle.ball.position.x < gameHandle.gWIDTH / 2)
-//           gameHandle.ball.position.x = this.position.x + this.width + gameHandle.ball.radius;
-//         else
-//           gameHandle.ball.position.x = this.position.x - gameHandle.ball.radius;
-//       }
       gameHandle.ball.calculateTrajectory();
     }
   }

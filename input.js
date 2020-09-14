@@ -18,11 +18,15 @@ export default function InputHandler(gameHandle){
   var keyDownHandler = function(e){
     if(e.key == "Up" || e.key == "ArrowUp"){
       gameHandle.paddleR.userDir = -1;
-      console.log("up");
     }
     else if(e.key == "Down" || e.key == "ArrowDown"){
       gameHandle.paddleR.userDir = 1;
-      console.log("down");
+    }
+    else if(e.keyCode == 65){
+      gameHandle.paddleL.userDir = -1;
+    }
+    else if(e.keyCode == 90){
+      gameHandle.paddleL.userDir = 1;
     }
     else if(e.keyCode == 27)
       console.log("Escape key pressed.");
@@ -30,11 +34,15 @@ export default function InputHandler(gameHandle){
   var keyUpHandler = function(e){
     if(e.key == "Up" || e.key == "ArrowUp"){
       gameHandle.paddleR.userDir = 0;
-      console.log("up release");
     }
     else if(e.key == "Down" || e.key == "ArrowDown"){
       gameHandle.paddleR.userDir = 0;
-      console.log("down release");
+    }
+    else if(e.keyCode == 65){
+      gameHandle.paddleL.userDir = 0;
+    }
+    else if(e.keyCode == 90){
+      gameHandle.paddleL.userDir = 0;
     }
   }
 }
