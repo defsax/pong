@@ -7,28 +7,18 @@ const WIDTH = 400;
 const HEIGHT = 400;
 
 var speedslider = document.getElementById("speedslider");
-var speeddisplay = document.getElementById("ballspeed");
 var leftslider = document.getElementById("leftslider");
-var leftdisplay = document.getElementById("leftspeed");
 var rightslider = document.getElementById("rightslider");
-var rightdisplay = document.getElementById("rightspeed");
 var canvas = document.getElementById("pongCanvas");
 var ctx = canvas.getContext("2d");
 
-speeddisplay.innerHTML = speedslider.value;
-leftdisplay.innerHTML = leftslider.value;
-rightdisplay.innerHTML = rightslider.value;
-
 leftslider.oninput = function(){
-  leftdisplay.innerHTML = this.value;
   objManager.paddleL.setSpeed(this.value);
 }
 rightslider.oninput = function(){
-  rightdisplay.innerHTML = this.value;
   objManager.paddleR.setSpeed(this.value);
 }
 speedslider.oninput = function(){
-  speeddisplay.innerHTML = this.value;
   objManager.ball.setSpeed(this.value);
 }
 
