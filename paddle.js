@@ -6,6 +6,7 @@ export default function Paddle(gameHandle, x, y, w, h, s){
   
   var dir = -1;
   var speed = s;
+  var threshold = 4;
   
   this.userDir = 0;
   this.width = w;
@@ -36,90 +37,108 @@ export default function Paddle(gameHandle, x, y, w, h, s){
   }
   
   this.update = function(dt){  
+    /* SETTING THE DIRECTION */
+    
+    /*if ball is within inner 6/8ths of game area, move paddle according to ball destination. 
+      otherwise, if ball is within 1/8 of game area closest to the paddle, 
+      move paddle based on ball's y coord.*/
     if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 8) && gameHandle.ball.position.x < (gameHandle.gWIDTH - gameHandle.gWIDTH / 8)){
       //if ball trajectory position is higher on the y axis, move paddle in that direction
-      if(gameHandle.ball.trajectory.y >= (this.position.y + this.height / 2)){
+      if(gameHandle.ball.trajectory.y >= (this.position.y + this.height / 2))
         dir = 1;
-      } //else move in neg direction (up)
-      else if(gameHandle.ball.trajectory.y <= (this.position.y + this.height / 2)){
+      //else move in neg direction (up)
+      else if(gameHandle.ball.trajectory.y <= (this.position.y + this.height / 2))
         dir = -1;
-      }
     }
     else{
-      if(gameHandle.ball.position.y >= (this.position.y + this.height / 2)){
+      //set paddle direction toward ball's y's center
+      if(gameHandle.ball.position.y >= (this.position.y + this.height / 2))
         dir = 1;
-      } //else move in neg direction (up)
-      else if(gameHandle.ball.position.y <= (this.position.y + this.height / 2)){
+      else if(gameHandle.ball.position.y <= (this.position.y + this.height / 2))
         dir = -1;
-      }
     }
-    //modify actual y position by direction times speed
+    
+    
+    /* MOVING THE PADDLE */
+    
+    //if the paddle is on the right
     if(this.position.x > gameHandle.gWIDTH / 2){
-      //paddle is on the right
-      if(gameHandle.ball.position.x > (gameHandle.gWIDTH / 3) && rightControl.checked == false){
+      //if the ball is within the right paddle's "visibility" threshold, and user has not selected to control the paddle
+      if(gameHandle.ball.position.x > (gameHandle.gWIDTH / threshold) && rightControl.checked == false){
+        //modify actual y position by direction times speed
         this.position.y += dir * speed;
-        dir = 0;
+        //dir = 0;
       }
+      //otherwise just move paddle based on user input direction
       else
         this.position.y += this.userDir * speed;
     }
     else{
       //paddle is on the left
-      if(gameHandle.ball.position.x < (gameHandle.gWIDTH - gameHandle.gWIDTH / 3) && leftControl.checked == false){
+      if(gameHandle.ball.position.x < (gameHandle.gWIDTH - gameHandle.gWIDTH / threshold) && leftControl.checked == false){
+        //modify actual y position by direction times speed
         this.position.y += dir * speed;
-        dir = 0;
+        //dir = 0;
       }
+      //otherwise just move paddle based on user input direction
       else
         this.position.y += this.userDir * speed;
     }
-    //prevent from going off the screen
+    
+    //prevent the paddle from going off the screen
     if(this.position.y < 0)
       this.position.y = 0;
     else if(this.position.y + this.height > gameHandle.gHEIGHT)
       this.position.y = gameHandle.gHEIGHT - this.height;
     
+    /* RESOLVE COLLISIONS WITH BALL */
     
-    //check collisions with ball
+    //check if paddle is colliding with ball
     if(utils.isCollision(gameHandle.ball, this)){
-      if(gameHandle.ball.position.y > this.position.y + this.height && 
-        gameHandle.ball.position.y - gameHandle.ball.radius < this.position.y + this.height &&
-        gameHandle.ball.position.x < this.position.x + this.width &&
-        gameHandle.ball.position.x > this.position.x &&
-        Math.sign(gameHandle.ball.direction.y) == -1)
+      //narrow down which area of the paddle the ball has hit so as not to trigger multiple redirections
+      
+      //bottom
+      if(gameHandle.ball.position.y > this.position.y + this.height 
+        && gameHandle.ball.position.y - gameHandle.ball.radius < this.position.y + this.height 
+        && gameHandle.ball.position.x < this.position.x + this.width 
+        && gameHandle.ball.position.x > this.position.x 
+        && Math.sign(gameHandle.ball.direction.y) == -1)
       {
-        console.log("Paddle collision bottom.");
         gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
       }
-      else if(gameHandle.ball.position.y < this.position.y &&
-        gameHandle.ball.position.y + gameHandle.ball.radius > this.position.y && 
-        gameHandle.ball.position.x < this.position.x + this.width &&
-        gameHandle.ball.position.x > this.position.x &&
-        Math.sign(gameHandle.ball.direction.y) == 1)
+      //top
+      else if(gameHandle.ball.position.y < this.position.y 
+        && gameHandle.ball.position.y + gameHandle.ball.radius > this.position.y 
+        && gameHandle.ball.position.x < this.position.x + this.width 
+        && gameHandle.ball.position.x > this.position.x 
+        && Math.sign(gameHandle.ball.direction.y) == 1)
       {
-        console.log("Paddle collision top.");
         gameHandle.ball.direction.y = -gameHandle.ball.direction.y;
       }
+      //right (on left paddle)
       else if(gameHandle.ball.position.x - gameHandle.ball.radius < this.position.x + this.width 
         && gameHandle.ball.position.x > this.position.x
         && gameHandle.ball.position.x < gameHandle.gWIDTH / 2)
       {
-        console.log("Right collision");
+        //only switch ball x direction if ball is moving to the left
         if(Math.sign(gameHandle.ball.direction.x) == -1){
           gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
         }
       }
+      //left (on right paddle)
       else if(gameHandle.ball.position.x + gameHandle.ball.radius > this.position.x 
         && gameHandle.ball.position.x + gameHandle.ball.radius < this.position.x + this.width
         && gameHandle.ball.position.y > this.position.y 
         && gameHandle.ball.position.y < this.position.y + this.height 
         && gameHandle.ball.position.x > gameHandle.gWIDTH / 2)
       {
-        console.log("Left collision.");
+        //only switch ball x direction if ball is moving to the right
         if(Math.sign(gameHandle.ball.direction.x) == 1){
           gameHandle.ball.direction.x = -gameHandle.ball.direction.x;
-          //gameHandle.ball.position.x = this.position.x - gameHandle.ball.radius - 1;
         }
       }
+      
+      //every time collisions are resolved, recalculate ball's destination trajectory
       gameHandle.ball.calculateTrajectory();
     }
   }

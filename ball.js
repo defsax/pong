@@ -38,20 +38,12 @@ export default function Ball(gameHandle, x, y, r, s){
     this.position.y += this.direction.y * speed;
     
     //if ball hits left side, increment right's score and reset pos
-    if(this.position.x + this.radius < 0){
-      
-      console.log("X: " + this.position.x);
-      console.log("Y: " + this.position.y);
-      
+    if(this.position.x + this.radius < 0){      
       gameHandle.rScore++;
       this.resetBall();
     }
     //if ball hits right side, increment left's score and reset pos
     else if(this.position.x - this.radius > gameHandle.gWIDTH){
-      
-      console.log("X: " + this.position.x);
-      console.log("Y: " + this.position.y);
-      
       gameHandle.lScore++;
       this.resetBall();
     }
@@ -79,7 +71,6 @@ export default function Ball(gameHandle, x, y, r, s){
     
     //loop until no angles too close to straight up or down
     while(newBounceAngle < 0.1 && newBounceAngle > -0.1){
-      console.log(newBounceAngle);
       newBounceAngle = utils.getRndFloat(-1.2, 1.2);
     }
  
