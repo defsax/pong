@@ -6,9 +6,12 @@ export default function Ball(gameHandle, x, y, r, s){
   
   this.resetBall = function(){
     speed = 0;
+    
+    //set ball position to center
     this.position.x = gameHandle.gWIDTH / 2;
     this.position.y = gameHandle.gHEIGHT / 2;
-    //this.calculateStartAngle();
+    
+    //pause after scoring
     window.setTimeout(function(){ballHandle.calculateStartAngle();}, 1000);
   }
   

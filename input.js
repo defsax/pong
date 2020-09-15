@@ -1,5 +1,3 @@
-//import * as utils from './utilities.js';
-
 export default function InputHandler(gameHandle){
   
   this.initialize = function(){
